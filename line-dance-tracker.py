@@ -44,7 +44,6 @@ with st.sidebar:
     st.title("🕺 LineDance Tracker")
     user_zip = st.text_input("ZIP Code", value="22508", key="user_zip")
     max_drive = st.slider("Maximum driving distance (miles)", 10, 150, 50, key="max_drive")
-    include_fallback = st.checkbox("Include manual fallback events", value=True)
     if st.button("🔄 Refresh web sources"):
         st.cache_data.clear()
         st.rerun()
@@ -57,8 +56,7 @@ if st.session_state.previous_zip != user_zip:
     st.session_state.previous_zip = user_zip
     st.rerun()
 
-# Updated title - "Real" removed
-st.markdown("**Line Dancing Near Fredericksburg / Spotsylvania** 🎶")
+st.markdown("**Line Dancing near Lake of the Woods** 🎶")
 
 # Load geocoding
 if 'nomi' not in st.session_state:
@@ -492,14 +490,12 @@ sources = deduped_sources[:max_search_sources]
 
 web_events, source_status = fetch_web_events(sources, max_drive, user_zip)
 
-if include_fallback:
-    fallback_web_events, fallback_status = fetch_web_events(manual_sources, max_drive, user_zip)
-    source_status = pd.concat([source_status, fallback_status], ignore_index=True)
-    events = pd.concat([web_events, fallback_web_events, fallback_events], ignore_index=True).drop_duplicates(
-        subset=["Event/Venue", "Address", "Date/Time"]
-    )
-else:
-    events = web_events.copy()
+# Always include manual fallback events
+fallback_web_events, fallback_status = fetch_web_events(manual_sources, max_drive, user_zip)
+source_status = pd.concat([source_status, fallback_status], ignore_index=True)
+events = pd.concat([web_events, fallback_web_events, fallback_events], ignore_index=True).drop_duplicates(
+    subset=["Event/Venue", "Address", "Date/Time"]
+)
 
 events = events[events["Event/Venue"].apply(_is_line_dancing_event)].copy()
 
@@ -547,7 +543,6 @@ with tab_list:
     st.subheader(f"Events within {max_drive} miles of ZIP **{user_zip}**")
     max_in_dataset = events["Distance (miles)"].max() if not events.empty else 0
     st.caption(f"Showing {len(filtered)} line dancing events • Max distance found: **{max_in_dataset:.1f} miles**")
-    st.info("📍 Line dancing events are mostly local. Larger radii may not add many more results.")
 
     if filtered.empty:
         st.warning("No events found in that range.")
@@ -600,4 +595,4 @@ with tab_log:
         for i, dance in enumerate(reversed(st.session_state.dance_log[-15:]), 1):
             st.markdown(f"**{i}.** {dance}")
 
-st.caption("LineDance Tracker | Title updated • Drive Time removed • Sorted by closest • Headers centered! 🚀")
+st.caption("LineDance Tracker 🚀")
