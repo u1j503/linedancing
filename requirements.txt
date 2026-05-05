@@ -1,0 +1,8 @@
+streamlit
+pandas
+geopy
+pgeocode
+folium
+streamlit-folium
+requests
+beautifulsoup4
