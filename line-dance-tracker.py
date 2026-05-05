@@ -91,11 +91,11 @@ def _build_search_queries(zip_code: str, radius_miles: int):
         f"\"line dancing\" OR \"line dance\" OR \"soul line dance\" events {radius_phrase} of {area_terms} -python -stackoverflow",
         f"\"soul line dance\" OR \"country line dance\" classes {radius_phrase} of {area_terms}",
         f"\"line dance\" nights OR class OR lesson {radius_phrase} {area_terms}",
-        f"\"line dance\" OR \"line dancing\" (Cheri OR Regina OR \"Olivia Ray\" OR \"Boom Fitness\" OR \"Linda\" OR \"Sheila Snipes\") Virginia OR Fredericksburg OR Spotsylvania",
+        f"\"line dance\" OR \"line dancing\" (Cheri OR Regina OR \"Olivia Ray\" OR \"Boom Fitness\" OR \"Linda\" OR \"Sheila Snipes\") Virginia OR Fredericksburg OR Spotsylvania OR \"Lake of the Woods\"",
     ]
     if radius_miles > 80:
         queries.extend([
-            f"\"line dancing\" OR \"line dance\" OR \"soul line dance\" {area_terms} OR Virginia",
+            f"\"line dancing\" OR \"line dance\" OR \"soul line dance\" Virginia OR Fredericksburg OR \"Lake of the Woods\"",
             f"\"country line dance\" OR \"soul line dance\" class OR night Virginia",
         ])
     return queries
@@ -474,7 +474,7 @@ max_search_sources = 30
 
 seed_sources = build_sources_for_zip_radius(user_zip, max_drive)
 
-discovery_max = 20 if max_drive > 50 else 8
+discovery_max = 30 if max_drive > 50 else 12   # more aggressive for large radii
 discovered = discover_sources_duckduckgo(user_zip, max_drive, max_results=discovery_max)
 discovered += discover_sources_bing(user_zip, max_drive, max_results=discovery_max)
 
