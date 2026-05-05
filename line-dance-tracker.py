@@ -57,7 +57,8 @@ if st.session_state.previous_zip != user_zip:
     st.session_state.previous_zip = user_zip
     st.rerun()
 
-st.markdown("**Real Line Dancing Near Fredericksburg / Spotsylvania** 🎶")
+# Updated title - "Real" removed
+st.markdown("**Line Dancing Near Fredericksburg / Spotsylvania** 🎶")
 
 # Load geocoding
 if 'nomi' not in st.session_state:
@@ -545,7 +546,7 @@ tab_list, tab_map, tab_log = st.tabs(["🔍 Events List", "🗺️ Map", "📊 M
 with tab_list:
     st.subheader(f"Events within {max_drive} miles of ZIP **{user_zip}**")
     max_in_dataset = events["Distance (miles)"].max() if not events.empty else 0
-    st.caption(f"Showing {len(filtered)} real line dancing events • Max distance found: **{max_in_dataset:.1f} miles**")
+    st.caption(f"Showing {len(filtered)} line dancing events • Max distance found: **{max_in_dataset:.1f} miles**")
     st.info("📍 Line dancing events are mostly local. Larger radii may not add many more results.")
 
     if filtered.empty:
@@ -599,4 +600,4 @@ with tab_log:
         for i, dance in enumerate(reversed(st.session_state.dance_log[-15:]), 1):
             st.markdown(f"**{i}.** {dance}")
 
-st.caption("LineDance Tracker | Drive Time removed • Sorted by closest • Headers centered! 🚀")
+st.caption("LineDance Tracker | Title updated • Drive Time removed • Sorted by closest • Headers centered! 🚀")
